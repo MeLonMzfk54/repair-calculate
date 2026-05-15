@@ -38,6 +38,8 @@ export function GroupCard({
         ),
     )
 
+    const [collapsedGroup, setCollapsedGroup] = useState<boolean>(false);
+
     const groupSum = groupTotal(group)
     const percent =
         grandTotal > 0 ? Math.round((groupSum / grandTotal) * 100) : 0
@@ -56,10 +58,12 @@ export function GroupCard({
 
     return (
         <article
-            className="group-card"
+            className={`group-card ${
+                collapsedGroup ? 'collapsed' : ''
+            }`}
             style={{ '--group-color': group.color } as React.CSSProperties}
         >
-            <header className="group-header">
+            <header style={{cursor: 'pointer'}} className="group-header" onClick={() => setCollapsedGroup(!collapsedGroup)}>
                 <div className="group-title-row">
                     <span className="group-dot" aria-hidden />
                     <h3 className="group-name">{group.name}</h3>
@@ -84,74 +88,81 @@ export function GroupCard({
                 </div>
             </header>
 
-            <div className="articles-list">
-                {group.articles.length === 0 ? (
-                    <p className="articles-empty">
-                        Добавьте статью расхода в этой группе
-                    </p>
-                ) : (
-                    group.articles.map((article, index) => {
-                        const collapsed = collapsedArticles[article.id]
+            {
+                (
+                    <div className="group-content">
+                        <div className="articles-list">
+                            {group.articles.length === 0 ? (
+                                <p className="articles-empty">
+                                    Добавьте статью расхода в этой группе
+                                </p>
+                            ) : (
+                                group.articles.map((article, index) => {
+                                    const collapsed = collapsedArticles[article.id]
 
-                        return (
-                            <div
-                                key={article.id}
-                                className={`article-wrapper ${
-                                    collapsed ? 'collapsed' : ''
-                                }`}
+                                    return (
+                                        <div
+                                            key={article.id}
+                                            className={`article-wrapper ${
+                                                collapsed ? 'collapsed' : ''
+                                            }`}
+                                        >
+                                            <button
+                                                type="button"
+                                                className="article-collapse-btn"
+                                                onClick={() => toggleArticle(article.id)}
+                                                aria-label={
+                                                    collapsed
+                                                        ? `Развернуть ${article.name}`
+                                                        : `Свернуть ${article.name}`
+                                                }
+                                            >
+                                                <span style={{marginRight: '5px'}}>{collapsed ? '▶' : '▼'}</span>
+                                                <span>{article.name}</span>
+                                            </button>
+
+                                            {!collapsed && (
+                                                <ArticleBlock
+                                                    groupId={group.id}
+                                                    article={article}
+                                                    articleColor={getArticleColor(
+                                                        group.color,
+                                                        index,
+                                                        group.articles.length,
+                                                    )}
+                                                    onRemoveArticle={onRemoveArticle}
+                                                    onAddEntry={onAddEntry}
+                                                    onRemoveEntry={onRemoveEntry}
+                                                />
+                                            )}
+                                        </div>
+                                    )
+                                })
+                            )}
+                        </div>
+
+                        <form className="add-article-form" onSubmit={handleAddArticle}>
+                            <input
+                                type="text"
+                                className="input input-sm"
+                                placeholder="Новая статья (напр. Плитка)"
+                                value={articleName}
+                                onChange={(e) => setArticleName(e.target.value)}
+                                maxLength={60}
+                            />
+
+                            <button
+                                type="submit"
+                                className="btn btn-secondary btn-sm"
+                                disabled={!articleName.trim()}
                             >
-                                <button
-                                    type="button"
-                                    className="article-collapse-btn"
-                                    onClick={() => toggleArticle(article.id)}
-                                    aria-label={
-                                        collapsed
-                                            ? `Развернуть ${article.name}`
-                                            : `Свернуть ${article.name}`
-                                    }
-                                >
-                                    <span style={{marginRight: '5px'}}>{collapsed ? '▶' : '▼'}</span>
-                                    <span>{article.name}</span>
-                                </button>
+                                Добавить статью
+                            </button>
+                        </form>
+                    </div>
+                )
+            }
 
-                                {!collapsed && (
-                                    <ArticleBlock
-                                        groupId={group.id}
-                                        article={article}
-                                        articleColor={getArticleColor(
-                                            group.color,
-                                            index,
-                                            group.articles.length,
-                                        )}
-                                        onRemoveArticle={onRemoveArticle}
-                                        onAddEntry={onAddEntry}
-                                        onRemoveEntry={onRemoveEntry}
-                                    />
-                                )}
-                            </div>
-                        )
-                    })
-                )}
-            </div>
-
-            <form className="add-article-form" onSubmit={handleAddArticle}>
-                <input
-                    type="text"
-                    className="input input-sm"
-                    placeholder="Новая статья (напр. Плитка)"
-                    value={articleName}
-                    onChange={(e) => setArticleName(e.target.value)}
-                    maxLength={60}
-                />
-
-                <button
-                    type="submit"
-                    className="btn btn-secondary btn-sm"
-                    disabled={!articleName.trim()}
-                >
-                    Добавить статью
-                </button>
-            </form>
         </article>
     )
 }
