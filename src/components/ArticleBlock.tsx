@@ -69,6 +69,15 @@ export function ArticleBlock({
                 {entry.note || 'Без комментария'}
               </span>
               <span className="expense-amount">{formatCurrency(entry.amount)}</span>
+                <button
+                    type="button"
+                    className="btn-icon btn-icon-sm"
+                    onClick={() => console.log('редактировать позицию')}
+                    title="Редактировать"
+                    aria-label="Редактировать позицию"
+                >
+                    ред.
+                </button>
               <button
                 type="button"
                 className="btn-icon btn-icon-sm"
