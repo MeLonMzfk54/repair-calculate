@@ -164,7 +164,8 @@ export function useExpenses() {
                                 ? {
                                     ...article,
                                     entries: article.entries.map((e) => {
-                                            e.amount = 4097;
+                                            e.amount = amount;
+                                            e.note = note;
                                            return e;
                                     }),
                                 }

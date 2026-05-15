@@ -35,6 +35,10 @@ export function ArticleBlock({
 }: ArticleBlockProps) {
   const [note, setNote] = useState('')
   const [amount, setAmount] = useState('')
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [editedNote, setEditedNote] = useState<string>('');
+  const [editedAmount, setEditedAmount] = useState<string>('');
+
 
   const sum = articleTotal(article)
 
@@ -73,14 +77,37 @@ export function ArticleBlock({
         ) : (
           article.entries.map((entry) => (
             <li key={entry.id} className="expense-item">
-              <span className="expense-title">
-                {entry.note || 'Без комментария'}
-              </span>
-              <span className="expense-amount">{formatCurrency(entry.amount)}</span>
+                {
+                    isEditing ? (
+                        <div>
+                            <input type="text" value={editedNote} onChange={(e) => setEditedNote(e.target.value)}/>
+                            <input type="text" value={editedAmount} onChange={(e) => setEditedAmount(e.target.value)}/>
+                            <div onClick={() => {
+                                setIsEditing(false);
+                                setEditedNote('');
+                                setEditedAmount('');
+                                onEditEntry(groupId, article.id, entry.id, editedNote, +editedAmount)
+                            }}>сохранить</div>
+                        </div>
+                    ) : (
+                        <>
+                    <span className="expense-title">
+                        {entry.note || 'Без комментария'}
+                    </span>
+                            <span className="expense-amount">{formatCurrency(entry.amount)}</span>
+                        </>
+                    )
+                }
                 <button
                     type="button"
                     className="btn-icon btn-icon-sm"
-                    onClick={() => onEditEntry(groupId, article.id, entry.id, entry.note, entry.amount)}
+                    onClick={() => {
+                        setIsEditing(!isEditing);
+                        if (!isEditing) {
+                            setEditedNote('');
+                            setEditedAmount('');
+                        }
+                    }}
                     title="Редактировать"
                     aria-label="Редактировать позицию"
                 >
