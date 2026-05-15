@@ -58,3 +58,11 @@ button {
 .recharts-default-legend {
   font-size: 12px !important;
 }
+
+.article-collapse-btn {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: .5s all ease;
+}
