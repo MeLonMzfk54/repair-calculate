@@ -144,9 +144,19 @@
 }
 
 .charts-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* два графика в ряд */
+    gap: 1.25rem;
+}
+
+.chart-block-wide {
+    grid-column: 1 / -1; /* занимает всю ширину под круговыми графиками */
+}
+
+@media (max-width: 768px) {
+    .charts-grid {
+        grid-template-columns: 1fr; /* на мобилке один под другим */
+    }
 }
 
 .charts-grid-3 {

@@ -70,37 +70,66 @@ export function ExpenseChart({ groupData, articleData }: ExpenseChartProps) {
   return (
     <div className="chart-card">
       <h2 className="form-title">График расходов</h2>
-      <div className="charts-grid charts-grid-3">
-        <div className="chart-block">
-          <p className="chart-subtitle">По группам</p>
-          {groupData.length === 0 ? (
-            <p className="chart-placeholder">Нет данных по группам</p>
-          ) : (
-            <ResponsiveContainer width="100%" height={240}>
-              <PieChart>
-                <Pie
-                  data={groupData}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={48}
-                  outerRadius={82}
-                  paddingAngle={3}
-                >
-                  {groupData.map((entry) => (
-                    <Cell key={entry.id} fill={entry.color} stroke="transparent" />
-                  ))}
-                </Pie>
-                <Tooltip content={<GroupTooltip />} />
-                <Legend
-                  formatter={(value) => (
-                    <span className="chart-legend-label">{value}</span>
-                  )}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          )}
+        <div className={'charts charts-grid'}>
+            <div className="chart-block">
+                <p className="chart-subtitle">По группам</p>
+                {groupData.length === 0 ? (
+                    <p className="chart-placeholder">Нет данных по группам</p>
+                ) : (
+                    <ResponsiveContainer width="100%" height={240}>
+                        <PieChart>
+                            <Pie
+                                data={groupData}
+                                dataKey="value"
+                                nameKey="name"
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={48}
+                                outerRadius={82}
+                                paddingAngle={3}
+                            >
+                                {groupData.map((entry) => (
+                                    <Cell key={entry.id} fill={entry.color} stroke="transparent" />
+                                ))}
+                            </Pie>
+                            <Tooltip content={<GroupTooltip />} />
+                            <Legend
+                                formatter={(value) => (
+                                    <span className="chart-legend-label">{value}</span>
+                                )}
+                            />
+                        </PieChart>
+                    </ResponsiveContainer>
+                )}
+            </div>
+
+            <div className="chart-block">
+                <p className="chart-subtitle">Доля статей</p>
+                {articleData.length === 0 ? (
+                    <p className="chart-placeholder">Нет данных по статьям</p>
+                ) : (
+                    <ResponsiveContainer width="100%" height={240}>
+                        <PieChart>
+                            <Pie
+                                data={articleData}
+                                dataKey="value"
+                                nameKey="label"
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={48}
+                                outerRadius={82}
+                                paddingAngle={2}
+                            >
+                                {articleData.map((entry) => (
+                                    <Cell key={entry.id} fill={entry.color} stroke="transparent" />
+                                ))}
+                            </Pie>
+                            <Tooltip content={<ArticleTooltip />} />
+                        </PieChart>
+                    </ResponsiveContainer>
+                )}
+            </div>
+
         </div>
 
         <div className="chart-block chart-block-wide">
@@ -142,34 +171,6 @@ export function ExpenseChart({ groupData, articleData }: ExpenseChartProps) {
             </ResponsiveContainer>
           )}
         </div>
-
-        <div className="chart-block">
-          <p className="chart-subtitle">Доля статей</p>
-          {articleData.length === 0 ? (
-            <p className="chart-placeholder">Нет данных по статьям</p>
-          ) : (
-            <ResponsiveContainer width="100%" height={240}>
-              <PieChart>
-                <Pie
-                  data={articleData}
-                  dataKey="value"
-                  nameKey="label"
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={48}
-                  outerRadius={82}
-                  paddingAngle={2}
-                >
-                  {articleData.map((entry) => (
-                    <Cell key={entry.id} fill={entry.color} stroke="transparent" />
-                  ))}
-                </Pie>
-                <Tooltip content={<ArticleTooltip />} />
-              </PieChart>
-            </ResponsiveContainer>
-          )}
-        </div>
       </div>
-    </div>
   )
 }
