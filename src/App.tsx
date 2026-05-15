@@ -19,6 +19,7 @@ function App() {
     addEntry,
     removeEntry,
     clearAll,
+      editEntry,
   } = useExpenses()
 
   const { articleCount, entryCount } = useMemo(() => {
@@ -99,6 +100,7 @@ function App() {
                   onRemoveArticle={removeArticle}
                   onAddEntry={addEntry}
                   onRemoveEntry={removeEntry}
+                  onEditEntry={editEntry}
                 />
               ))}
             </div>

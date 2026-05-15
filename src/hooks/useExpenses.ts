@@ -148,6 +148,34 @@ export function useExpenses() {
     [],
   )
 
+    const editEntry = useCallback((groupId: string, articleId: string, entryId: string, note: string, amount: number) => {
+        if (amount <= 0) return false
+
+        console.log('entryId - ', entryId);
+        console.log('note - ', note);
+
+        setGroups((prev) =>
+            prev.map((group) =>
+                group.id === groupId
+                    ? {
+                        ...group,
+                        articles: group.articles.map((article) =>
+                            article.id === articleId
+                                ? {
+                                    ...article,
+                                    entries: article.entries.map((e) => {
+                                            e.amount = 4097;
+                                           return e;
+                                    }),
+                                }
+                                : article,
+                        ),
+                    }
+                    : group,
+            ),
+        )
+    }, [])
+
   const removeEntry = useCallback(
     (groupId: string, articleId: string, entryId: string) => {
       setGroups((prev) =>
@@ -187,5 +215,6 @@ export function useExpenses() {
     addEntry,
     removeEntry,
     clearAll,
+      editEntry,
   }
 }

@@ -17,7 +17,8 @@ interface GroupCardProps {
         note: string,
         amount: number,
     ) => boolean
-    onRemoveEntry: (groupId: string, articleId: string, entryId: string) => void
+    onRemoveEntry: (groupId: string, articleId: string, entryId: string) => void,
+    onEditEntry: (groupId: string, articleId: string, entryId: string, note: string, amount: number) => void
 }
 
 export function GroupCard({
@@ -28,6 +29,7 @@ export function GroupCard({
                               onRemoveArticle,
                               onAddEntry,
                               onRemoveEntry,
+                                onEditEntry,
                           }: GroupCardProps) {
     const [articleName, setArticleName] = useState('')
     const [collapsedArticles, setCollapsedArticles] = useState<
@@ -132,6 +134,7 @@ export function GroupCard({
                                                     )}
                                                     onRemoveArticle={onRemoveArticle}
                                                     onAddEntry={onAddEntry}
+                                                    onEditEntry={onEditEntry}
                                                     onRemoveEntry={onRemoveEntry}
                                                 />
                                             )}

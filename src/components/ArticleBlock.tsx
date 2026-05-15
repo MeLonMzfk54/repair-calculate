@@ -13,7 +13,14 @@ interface ArticleBlockProps {
     articleId: string,
     note: string,
     amount: number,
-  ) => boolean
+  ) => boolean,
+    onEditEntry: (
+        groupId: string,
+        articleId: string,
+        entryId: string,
+        note: string,
+        amount: number,
+    ) => void,
   onRemoveEntry: (groupId: string, articleId: string, entryId: string) => void
 }
 
@@ -24,6 +31,7 @@ export function ArticleBlock({
   onRemoveArticle,
   onAddEntry,
   onRemoveEntry,
+    onEditEntry,
 }: ArticleBlockProps) {
   const [note, setNote] = useState('')
   const [amount, setAmount] = useState('')
@@ -72,11 +80,11 @@ export function ArticleBlock({
                 <button
                     type="button"
                     className="btn-icon btn-icon-sm"
-                    onClick={() => console.log('редактировать позицию')}
+                    onClick={() => onEditEntry(groupId, article.id, entry.id, entry.note, entry.amount)}
                     title="Редактировать"
                     aria-label="Редактировать позицию"
                 >
-                    ред.
+                    🖊️
                 </button>
               <button
                 type="button"
