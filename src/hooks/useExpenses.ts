@@ -164,8 +164,10 @@ export function useExpenses() {
                                 ? {
                                     ...article,
                                     entries: article.entries.map((e) => {
-                                            e.amount = amount;
-                                            e.note = note;
+                                            if (entryId === e.id) {
+                                                e.amount = amount;
+                                                e.note = note;
+                                            }
                                            return e;
                                     }),
                                 }
